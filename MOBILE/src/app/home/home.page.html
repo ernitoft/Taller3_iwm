@@ -1,20 +1,38 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>home</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">home</ion-title>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> 
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-label>
+          <h1>¡Bienvenido al Taller 3!</h1>
+          <p>¿Qué deseas hacer?</p>
+        </ion-label>
+      </ion-card-title>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+      <ion-card-subtitle>
+        <ion-label>
+          <p>Introducción al Desarrollo Web/Móvil</p>
+        </ion-label>
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card>
+      <ion-card-content>
+        <ion-button color="primary" [routerLink]="['/login']" routerLinkActive="router-link-active">Inicio de sesión</ion-button>
+        <ion-button color="secundary" [routerLink]="['/register']" routerLinkActive="router-link-active">Registrate</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </ion-card>
+
+
 </ion-content>
