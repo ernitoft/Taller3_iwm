@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Helper\myHelper;
 use JWTAuth;
+use Illuminate\Support\Facades\Hash;
+
 /**
  * Controlador de autenticación
  */
@@ -25,17 +27,14 @@ class AuthController extends Controller
                 'password'=>'required|string',
             ], $messages);
 
-            $credentials = request(['email','password']);
-            try{
-                if (!$token = JWTAuth::attempt($credentials)) {
-                    return response()->json([
-                        'message'=>'Credenciales inválidas'
-                    ],401);
-                }
-            }catch(Exception $e){
+            $credenciales = $request->only('email','password');
+            if (!$token = JWTAuth::attempt($credenciales)) {
                 return response()->json([
-                    'message'=>'Error en el servidor'
-                ],500);
+                    'token'=> $token,
+                    'email'=>$request->email,
+                    'password'=>$request->password,
+                    'message' => 'Credenciales inválidas',
+                ], 401);
             }
             return response()->json([
                 'token'=>$token,
@@ -58,28 +57,38 @@ class AuthController extends Controller
             'yearBirth'=>'required|integer|min:1900|max:2023',
         ], $messages);
         
-        if (!verificarDominioCorreo($request->email)) {
+        if ($userValidate = User::find($request->rut) || $userValidate = User::find($request->email)) {
             return response()->json([
-                'message'=>'Dominio de correo inválido'
+                'message'=>'El usuario ya existe'
             ],400);
         }
-
-        if (!$helper) {
-            return response()->json([
-                'message'=>'RUT inválido'
-            ],400);
-        }
-
-        User::create([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>bcrypt($request->password),
-            'rut'=>$request->rut,
-            'yearBirth'=>$request->yearBirth,
-        ]);
-
+        
+        if (!$user = User::where('rut',$request->rut)->first()) {
+            if (!$user = User::where('email',$request->email)->first()) {
+                if (!verificarDominioCorreo($request->email)) {
+                    return response()->json([
+                        'message'=>'Dominio de correo inválido'
+                    ],400);
+                }
+                if (!$helper) {
+                    return response()->json([
+                        'message'=>'RUT inválido'
+                    ],400);
+                }
+                User::create([
+                    'name'=>$request->name,
+                    'email'=>$request->email,
+                    'password'=>Hash::make($request->password),
+                    'rut'=>$request->rut,
+                    'yearBirth'=>$request->yearBirth,
+                ]);
+                return response()->json([
+                    'message'=>'Usuario creado exitosamente'
+                ],200);
+            }
+        } 
         return response()->json([
-            'message'=>'Usuario creado exitosamente'
-        ],201);
+                'message'=>'El usuario ya existe'
+            ],400);
     }
 }

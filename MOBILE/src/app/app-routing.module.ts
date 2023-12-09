@@ -19,11 +19,16 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
+  {
+    path: 'tab-inicial',
+    loadChildren: () => import('./tab/tab-inicial/tab-inicial.module').then( m => m.TabInicialPageModule)
+  },
+  
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }, )
   ],
   exports: [RouterModule]
 })

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use JWTAuth;
 use AuthController;
+use Illuminate\Support\Facades\Hash;
 
 
 /**
@@ -14,13 +15,15 @@ use AuthController;
 class PostAuthController extends Controller
 {
 
-    public function index ()
+    public function index ($email)
     {
-        $user = JWTAuth::parseToken()->authenticate();
-        dd($user);
-        return response()->json([
-            'user' => $user
-        ], 200);
+        try{    
+            $usuarios = User::where('email',$email)->get();
+            return response()->json([
+                'usuario' => $usuarios],200);
+        }catch(\Exception $e){
+            throw new \Exception($e->getMessage());
+        }
     }
 
     /**
@@ -78,27 +81,25 @@ class PostAuthController extends Controller
     public function updatePassword(Request $request){
         $messages = makeMessages();
         $this->validate($request, [
-            'password' => 'required|string',
             'newPassword' => 'required|string',
             'confirmPassword' => 'required|string'
         ], $messages);
-
         $user = User::where('id', $request->id)->first();
-        if ($user->password != bcrypt($request->password)) {
-            return response()->json([
-                'message' => 'Contraseña incorrecta'
-            ], 400);
-        } else if ($request->newPassword != $request->confirmPassword) {
+        if ($request->newPassword != $request->confirmPassword) {
             return response()->json([
                 'message' => 'Las contraseñas no coinciden'
             ], 400);
-        } else if ($user->password == bcrypt($request->password) && $request->newPassword == $request->confirmPassword) {
+        } else if ($request->newPassword == $request->confirmPassword) {
             $user->update([
-                'password' => bcrypt($request->newPassword)
+                'password' => Hash::make($request->newPassword)
             ]);
             return response()->json([
                 'message' => 'Contraseña actualizada'
             ], 200);
+        }else{
+            return response()->json([
+                'message' => 'Error al actualizar la contraseña'
+            ], 400);
         }
     }
 }

@@ -18,8 +18,8 @@ use App\Http\Controllers\PostAuthController;
 
 Route::post('login',[AuthController::class,'login']);
 Route::post('register',[AuthController::class,'register']);
-
 Route::middleware(['jwt.verify'])->group(function(){
-    Route::get('user',[PostAuthController::class,'index']);
+    Route::get('user/{email}',[PostAuthController::class,'index']);
     Route::patch('update/{id}',[PostAuthController::class,'updateInfo']);
+    Route::patch('updatePassword/{id}',[PostAuthController::class,'updatePassword']);
 });

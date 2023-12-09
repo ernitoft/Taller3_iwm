@@ -27,75 +27,73 @@ function makeMessages(){
     return $messages;
 }
 
-    /**
-     * Función que verifica si un RUT es válido
-     * @param string $correo Correo a verificar
-     * @return bool Retorna true si el RUT es válido, false en caso contrario
-     */
-     function verificarDominioCorreo($correo) {
-        $dominiosPermitidos = array("ucn.cl", "alumnos.ucn.cl", "disc.ucn.cl", "ce.ucn.cl");
+/**
+ * Función que verifica si un RUT es válido
+ * @param string $correo Correo a verificar
+ * @return bool Retorna true si el RUT es válido, false en caso contrario
+ */
+    function verificarDominioCorreo($correo) {
+    $dominiosPermitidos = array("ucn.cl", "alumnos.ucn.cl", "disc.ucn.cl", "ce.ucn.cl");
 
-        if (filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-            list($usuario, $dominio) = explode('@', $correo);
+    if (filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+        list($usuario, $dominio) = explode('@', $correo);
 
-            return in_array(strtolower($dominio), array_map('strtolower', $dominiosPermitidos));
-        }
-
-        return false;
+        return in_array(strtolower($dominio), array_map('strtolower', $dominiosPermitidos));
     }
 
-    /**
-     * Función que calcula el dígito verificador de un RUT
-     * @param string $rut RUT a calcular dígito verificador
-     * @return string Retorna el dígito verificador calculado
-     */
-     function calcularDigitoVerificador($rut) {
-        $rutNumeros = preg_replace('/[^0-9]/', '', $rut);
+    return false;
+}
 
-        // Paso 2: Dar vuelta la cifra
-        $rutNumerosReverso = strrev($rutNumeros);
+/**
+ * Función que calcula el dígito verificador de un RUT
+ * @param string $rut RUT a calcular dígito verificador
+ * @return string Retorna el dígito verificador calculado
+ */
+function calcularDigitoVerificador($rut) {
+    // Limpiar el rut de puntos y guión
+    $cleanedRut = preg_replace('/[^0-9kK]/', '', $rut);
 
-        // Paso 3: Multiplicar por la serie y sumar los resultados
-        $suma = 0;
-        $multiplicador = 2;
-        for ($i = 0; $i < strlen($rutNumerosReverso); $i++) {
-            $digito = (int)$rutNumerosReverso[$i];
-            $resultado = $digito * $multiplicador;
-            $suma += $resultado;
+    // Verificar la longitud del RUT
+    $rutLength = strlen($cleanedRut);
 
-            // Actualizar el multiplicador para el siguiente dígito
-            $multiplicador++;
-            if ($multiplicador > 7) {
-                $multiplicador = 2;
-            }
+    if ($rutLength == 9 || $rutLength == 8) {
+        // Obtenemos el digito y el body
+        $digit = substr($cleanedRut, -1);
+        $body = substr($cleanedRut, 0, -1);
+
+        // Invertir la cadena
+        $bodyInverted = strrev($body);
+
+        // Definimos lo multipliers y la suma
+        $mult = [2,3,4,5,6,7];
+        $sum = 0;
+
+        for($i = 0; $i < strlen($bodyInverted); $i++){
+            $sum += $bodyInverted[$i] * $mult[$i % count($mult)];
+            $rest = $sum / 11;
+        }
+        $digitCalculated = 11 - ($sum - (floor($rest) * 11));
+
+        // Validar que el digito calculado no sea 10
+        if ($digitCalculated == 10){
+            $digitCalculated == 'k';
+        }
+        // Validar que el digito calculado no sea 11
+        else if($digitCalculated == 11){
+            $digitCalculated == '0';
         }
 
-        // Paso 4: Calcular el resto de la división por 11
-        $resto = $suma % 11;
-
-        // Paso 5: Calcular el dígito verificador
-        $digitoVerificador = 11 - $resto;
-
-        // Paso 6: Ajustar el resultado si es 11, asignando 0 como dígito verificador
-        if ($digitoVerificador == 11) {
-            $digitoVerificador = 0;
-        }
-
-        // Paso 7: Ajustar el resultado si es 10, asignando 'K' como dígito verificador
-        if ($digitoVerificador == 10) {
-            $digitoVerificador = 'K';
-        }
-
-        return $digitoVerificador;
-        }
-
-    /**
-     * Función que verifica si un RUT es válido con su dígito verificador
-     * @param string $rut RUT a verificar
-     * @return bool Retorna true si el RUT es válido, false en caso contrario
-     */
-     function verificarRUT($rut) {
-        $digitoVerificadorOriginal = substr($rut, -1);
-        $digitoVerificadorCalculado = calcularDigitoVerificador($rut);
-        return $digitoVerificadorOriginal == $digitoVerificadorCalculado;
+        return $digitCalculated;
     }
+}
+
+/**
+ * Función que verifica si un RUT es válido con su dígito verificador
+ * @param string $rut RUT a verificar
+ * @return bool Retorna true si el RUT es válido, false en caso contrario
+ */
+    function verificarRUT($rut) {
+    $digitoVerificadorOriginal = substr($rut, -1);
+    $digitoVerificadorCalculado = calcularDigitoVerificador($rut);
+    return $digitoVerificadorOriginal == $digitoVerificadorCalculado;
+}
