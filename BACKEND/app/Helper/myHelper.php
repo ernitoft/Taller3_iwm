@@ -97,3 +97,14 @@ function calcularDigitoVerificador($rut) {
     $digitoVerificadorCalculado = calcularDigitoVerificador($rut);
     return $digitoVerificadorOriginal == $digitoVerificadorCalculado;
 }
+
+/**
+ * Función que limpia un RUT de puntos y guión
+ * @param string $rut RUT a limpiar
+ * @return string Retorna el RUT limpio
+ */
+function limpiarRUT($rut) {
+    $rut = str_replace('.', '', $rut);
+    $rut = str_replace('-', '', $rut);
+    return $rut;
+}

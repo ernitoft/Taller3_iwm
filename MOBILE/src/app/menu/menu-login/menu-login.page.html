@@ -1,0 +1,27 @@
+<ion-split-pane contentId="main">
+  <ion-menu side="start" menuId="first" contentId="main">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle auto-hide="false" *ngFor="let item of paginas; let i = index">
+          <ion-item (click)="cambiarIndiceSeleccionado(i)" routerDirection="root" [routerLink]="[item.url]" lines="none" detail="false" [class.selected]="indiceSeleccionado == i">
+              <ion-icon slot="start" [name]="item.icono + '-outline'"></ion-icon>
+              <ion-label> {{item.titulo}} </ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle auto-hide="false">
+          <ion-item (click)="salir()" routerDirection="root" lines="none" detail="false">
+            <ion-icon slot="start" name="exit-outline"></ion-icon>
+            <ion-label>Salir</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="main"></ion-router-outlet>
+</ion-split-pane>

@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { TabInicialPageRoutingModule } from './tab-inicial-routing.module';
+import { MenuLoginPageRoutingModule } from './menu-login-routing.module';
 
-import { TabInicialPage } from './tab-inicial.page';
+import { MenuLoginPage } from './menu-login.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TabInicialPageRoutingModule
+    MenuLoginPageRoutingModule
   ],
-  declarations: [TabInicialPage]
+  declarations: [MenuLoginPage]
 })
-export class TabInicialPageModule {}
+export class MenuLoginPageModule {}

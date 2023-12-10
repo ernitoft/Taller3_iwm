@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { ApiServiceService } from '../service/api-service.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -24,46 +25,63 @@ export class LoginPage implements OnInit {
  * @param router router de la pagina.
  * @param usersService servicio de usuarios.
  */
-  constructor(public fb: FormBuilder, private router: Router, private usersService: ApiServiceService) {
+  constructor(public fb: FormBuilder, private router: Router, private usersService: ApiServiceService, public alertController: AlertController) {
     this.formulario = this.fb.group({
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
     });
-
-    
   }
-
+/**
+ * Metodo que se ejecuta al iniciar la pagina.
+ */
   ngOnInit() {
     this.errorMessages = [];
   }
-
+/**
+ * Metodo que se ejecuta al enviar el formulario de login.
+ */
   async onSubmit() {
     try {
+      if (this.formulario.invalid) {
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message: 'Todos los campos son obligatorios',
+          buttons: ['Aceptar'],
+        });
+        await alert.present();
+        return;
+      }
       const response:any = await this.usersService.login(this.formulario.value);
       if (!response.error) {
         localStorage.setItem('token', response.token);
         localStorage.setItem('email', response.email);
-        this.router.navigate(['/tab-inicial/editarinfo']);
+        this.router.navigate(['/menu-login/visualizar']);
+      } else {
+        this.addErrorMessages([response.message]);
       }
-    } catch (error: any) {
-      if (this.formulario.value.email === '' || this.formulario.value.password === '') {
-        const errorResponse = "Credenciales incorrectas";
-        this.addErrorMessages([errorResponse]);
-      }
+    } catch (error:any) {
       if (error instanceof HttpErrorResponse && error.error && error.error.errors) {
-        const usernameErrors = error.error.errors.username;
+        const emailErrors = error.error.errors.email;
         const passwordErrors = error.error.errors.password;
-        if (usernameErrors && usernameErrors.length > 0) {
-          this.addErrorMessages(usernameErrors);
+        if (emailErrors && emailErrors.length > 0) {
+          this.addErrorMessages(emailErrors);
         }
         if (passwordErrors && passwordErrors.length > 0) {
           this.addErrorMessages(passwordErrors);
         }
       } else if (error instanceof HttpErrorResponse && error.status === 500) {
-          const errorResponse = "Credenciales incorrectas";
+          const errorResponse = error.error.message ;
           this.addErrorMessages([errorResponse]);
       } else if (error instanceof HttpErrorResponse && error.status === 400) {
-        const errorResponse = "Credenciales incorrectas";
+        const errorResponse = error.error.message;
+        this.addErrorMessages([errorResponse]);
+      } else if (error instanceof HttpErrorResponse && error.status === 401) {
+        const errorResponse = error.error.message;
+        console.log(errorResponse);
+        this.addErrorMessages([errorResponse]);
+        console.log(this.errorMessages);
+      } else if (error instanceof HttpErrorResponse && error.status === 404) {
+        const errorResponse = "No encontrado";
         this.addErrorMessages([errorResponse]);
       }
     } 
@@ -80,6 +98,9 @@ export class LoginPage implements OnInit {
     }
   }
 
+  /**
+   * Metodo que redirige a la pagina de registro.
+   */
   register() {
     this.router.navigate(['/register']);
   }

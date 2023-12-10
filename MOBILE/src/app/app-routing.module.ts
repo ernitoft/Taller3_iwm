@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { loginGuard } from './guards/login.guards';
 
 const routes: Routes = [
   {
@@ -20,9 +21,10 @@ const routes: Routes = [
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
   {
-    path: 'tab-inicial',
-    loadChildren: () => import('./tab/tab-inicial/tab-inicial.module').then( m => m.TabInicialPageModule)
-  },
+    path: 'menu-login',
+    canActivate: [loginGuard],
+    loadChildren: () => import('./menu/menu-login/menu-login.module').then( m => m.MenuLoginPageModule)
+  }
   
 ];
 

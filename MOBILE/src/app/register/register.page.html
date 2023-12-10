@@ -10,4 +10,45 @@
       <ion-title size="large">register</ion-title>
     </ion-toolbar>
   </ion-header>
+  <form [formGroup]="form">
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input type="text" name="name" formControlName="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Correo</ion-label>
+      <ion-input type="email" name="email" formControlName="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Año de nacimiento</ion-label>
+      <ion-input type="text" name="yearBirth" formControlName="yearBirth"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">RUT</ion-label>
+      <ion-input type="text" name="rut" formControlName="rut"></ion-input>
+    </ion-item>
+    <ion-button expand="block" color="primary" (click)="onSubmit()">Registrarse</ion-button>
+  </form>
+
+  <ion-card color="primary" *ngIf="errorMessages.length > 0">
+    <ion-card-header>
+      <ion-card-title>Errores</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let error of errorMessages">
+          <ion-label>- {{error}}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>¿Tienes cuenta?</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button color="secundary" [routerLink]="['/login']" routerLinkActive="router-link-active">Iniciar sesión</ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

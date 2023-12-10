@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiServiceService } from 'src/app/service/api-service.service';
 
 @Component({
@@ -16,6 +17,11 @@ export class EditarinfoPage implements OnInit {
    */
   logUser: any = [];
   user: any;
+
+  /**
+   * Variable que contiene la ruta de la pagina.
+   */
+  route = inject(Router);
 
   /**
    * Constructor de la pagina de informacion.
@@ -36,8 +42,6 @@ export class EditarinfoPage implements OnInit {
   obtenerDatos() {
     this.userService.getInfo(localStorage.getItem('email')).subscribe((data:any) => {
       this.logUser = data;
-      console.log(this.logUser);
-
     });
   }
 

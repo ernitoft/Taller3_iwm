@@ -21,25 +21,32 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse Retorna un JSON con el token y el email del usuario
      */
         public function login(Request $request){   
-            $messages = makeMessages();     
-            $this->validate($request,[
-                'email'=>'required|string',
-                'password'=>'required|string',
-            ], $messages);
+            try{
+                $messages = makeMessages();     
+                $this->validate($request,[
+                    'email'=>'required|string',
+                    'password'=>'required|string',
+                ], $messages);
 
-            $credenciales = $request->only('email','password');
-            if (!$token = JWTAuth::attempt($credenciales)) {
+                $credenciales = $request->only('email','password');
+                if (!$token = JWTAuth::attempt($credenciales)) {
+                    return response()->json([
+                        'token'=> $token,
+                        'email'=>$request->email,
+                        'password'=>$request->password,
+                        'message' => 'Credenciales inválidas',
+                    ], 401);
+                }
                 return response()->json([
-                    'token'=> $token,
+                    'token'=>$token,
                     'email'=>$request->email,
-                    'password'=>$request->password,
-                    'message' => 'Credenciales inválidas',
-                ], 401);
+                ],200);
+            }catch(\Exception $e){
+                return response()->json([
+                    'message'=>'Error al iniciar sesión',
+                ],400);
             }
-            return response()->json([
-                'token'=>$token,
-                'email'=>$request->email,
-            ],200);
+            
         }
     /**
      * Función que registra un usuario
@@ -52,7 +59,6 @@ class AuthController extends Controller
         $this->validate($request,[
             'name'=>'required|string|max:150|min:10',
             'email'=>'required|string|unique:users|regex:/^[^@]+@[^@.]+\.[^@]+$/',
-            'password'=>'required|string',
             'rut'=>'required|string|unique:users',
             'yearBirth'=>'required|integer|min:1900|max:2023',
         ], $messages);
@@ -75,10 +81,11 @@ class AuthController extends Controller
                         'message'=>'RUT inválido'
                     ],400);
                 }
+                $password = limpiarRUT($request->rut);
                 User::create([
                     'name'=>$request->name,
                     'email'=>$request->email,
-                    'password'=>Hash::make($request->password),
+                    'password'=>Hash::make($password),
                     'rut'=>$request->rut,
                     'yearBirth'=>$request->yearBirth,
                 ]);
