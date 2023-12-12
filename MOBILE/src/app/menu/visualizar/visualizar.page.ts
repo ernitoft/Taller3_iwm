@@ -19,8 +19,8 @@ export class VisualizarPage implements OnInit {
   cardVisible:boolean = false;
 
   commitIndex: number | null = null;
-
-
+  
+  commitsTotales: number = 0;
 
   /**
    * Constructor de la pagina de visualizar.
@@ -28,6 +28,7 @@ export class VisualizarPage implements OnInit {
    * @param router Router de la pagina.
    */
   constructor(private apiHub: ApihubService, private router: Router) { }
+
 
   /**
    * Metodo que se ejecuta al iniciar la pagina.
@@ -39,17 +40,25 @@ export class VisualizarPage implements OnInit {
   /**
    * Metodo que obtiene los repositorios.
    */
-  obtenerRepositorios(){
-    this.apiHub.Repositorios().subscribe((data:any) => {
-      this.repositorios = data;
-      console.log(data);
+  obtenerRepositorios() {
+    this.apiHub.Repositorios().subscribe((data: any) => {
+      this.repositorios = data.sort((a: any, b: any) => {
+        const dateA = new Date(a.updated_at).getTime();
+        const dateB = new Date(b.updated_at).getTime();
+        return dateB - dateA;
+      });
+      this.repositorios.forEach((repo: any) => {
+        this.apiHub.CommitsRepo(repo.name).subscribe((commitsData: any) => {
+          repo.commitsTotales = commitsData.length;
+        });
+      });
     });
   }
 
   obtenerCommits(repositorio:string){
     this.apiHub.CommitsRepo(repositorio).subscribe((data:any) => {
       this.commits = data;
-      console.log(data);
+      this.commitsTotales = this.commits.length;
     });
   }
 

@@ -8,8 +8,17 @@ import { AlertController, NavController } from '@ionic/angular';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+  /**
+   * Constructor de la página.
+   * @param router router de la página
+   * @param alertController alert controller de la página
+   * @param navController nav controller de la página
+   */
   constructor(private router: Router, private alertController: AlertController, private navController: NavController) {}
 
+  /**
+   * Método que desloguea al usuario.
+   */
   async logout() {
     const alert = await this.alertController.create({
       header: 'Cerrar Sesión',
@@ -35,12 +44,18 @@ export class AppComponent {
     await alert.present();
   }
 
+  /**
+   * Método que redirige a la página de perfil
+   */
   editarInfo(){
-    this.navController.navigateRoot('/editarinfo');
+    this.router.navigate(['/editarinfo']);
   }
 
+  /**
+   * Método que redirige a la página de visualizar
+   */
   visualizar(){
-    this.navController.navigateRoot('/visualizar');
+    this.router.navigate(['/visualizar']);
   }
 
 }

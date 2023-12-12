@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { ApiServiceService } from '../service/api-service.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +25,7 @@ export class LoginPage implements OnInit {
  * @param router router de la pagina.
  * @param usersService servicio de usuarios.
  */
-  constructor(public fb: FormBuilder, private router: Router, private usersService: ApiServiceService, public alertController: AlertController) {
+  constructor(public fb: FormBuilder, private router: Router, private usersService: ApiServiceService, public alertController: AlertController, private navController: NavController) {
     this.formulario = this.fb.group({
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
@@ -55,7 +55,7 @@ export class LoginPage implements OnInit {
       if (!response.error) {
         localStorage.setItem('token', response.token);
         localStorage.setItem('email', response.email);
-        this.router.navigate(['/visualizar']);
+        this.navController.navigateRoot(['/editarinfo']);
       } else {
         this.addErrorMessages([response.message]);
       }
