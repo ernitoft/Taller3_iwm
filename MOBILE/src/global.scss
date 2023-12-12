@@ -24,3 +24,16 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+
+ion-toolbar,
+.menu-header > ion-toolbar{
+  --background: #000814;
+  --color: white;
+  --background-hover: #001D3D;
+    --color-hover: white;
+    --background-activated: #001D3D;
+    --color-activated: white;
+    --background-focused: #001D3D;
+}
+

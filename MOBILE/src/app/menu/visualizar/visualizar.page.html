@@ -1,12 +1,52 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>  
-    <ion-title>visualizar</ion-title>
+        <ion-menu-button menu="main-menu"></ion-menu-button>
+    </ion-buttons> 
+    <ion-title>Repositorios de Dizkm8</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  
+
+  <img alt="img" src="{{repositorios[0].owner.avatar_url}}" />
+  <ion-card-header color="secondary">
+    <ion-card-title>{{repositorios[0].owner.login}}</ion-card-title>
+    <ion-card-subtitle>Información personal</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-list label = "Repositorios">
+    <ion-item *ngFor="let repositorio of repositorios let i =  index">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>{{repositorio.name}}</ion-card-title>
+          <ion-card-subtitle>{{repositorio.description}}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-label>Id: {{repositorio.id}}</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label>Url: {{repositorio.url}}</ion-label>
+          </ion-item>
+          <ion-button (click)="toggleVisibility(i,repositorio.name)" color="primary">Ver commits</ion-button>
+
+          <ion-card *ngIf="cardVisible && commitIndex == i">
+            <ion-card-content>
+              <ion-item *ngFor="let commit of commits">
+                <ion-card expand="block">
+                  <ion-card-content>
+                    <ion-item>
+                      <ion-label>{{commit.commit.message}}</ion-label>
+                    </ion-item>
+                  </ion-card-content>
+                </ion-card>
+              </ion-item>
+            </ion-card-content>
+          </ion-card>
+
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
 </ion-content>

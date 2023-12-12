@@ -24,7 +24,25 @@ const routes: Routes = [
     path: 'menu-login',
     canActivate: [loginGuard],
     loadChildren: () => import('./menu/menu-login/menu-login.module').then( m => m.MenuLoginPageModule)
-  }
+  },
+  {
+    path: 'visualizar',
+    canActivate: [loginGuard],
+    loadChildren: () => import('./menu/visualizar/visualizar.module').then( m => m.VisualizarPageModule)
+  },
+  {
+    path: 'editarinfo',
+    canActivate: [loginGuard],
+    loadChildren: () => import('./menu/editarinfo/editarinfo.module').then( m => m.EditarinfoPageModule)
+  },
+  {
+    path: 'perfil',
+    loadChildren: () => import('./menu/actualizar/perfil/perfil.module').then( m => m.PerfilPageModule)
+  },
+  {
+    path: 'contrasena',
+    loadChildren: () => import('./menu/actualizar/contrasena/contrasena.module').then( m => m.ContrasenaPageModule)
+  },
   
 ];
 

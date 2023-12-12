@@ -45,14 +45,11 @@ export class RegisterPage implements OnInit {
     this.limpiarErrores();
   }
 
-
   /**
    * Metodo que limpia los mensajes de error.
    */
   async limpiarErrores() {
-    //Limpia los mensajes de error
     this.errorMessages = []
-    console.log(this.errorMessages)
   }
 
   /**
@@ -70,9 +67,13 @@ export class RegisterPage implements OnInit {
         await alert.present();
         return;
       }
-      await this.apiService.register(this.form.value);
-      this.apiService.login(this.form.value);
-      this.router.navigate(['/menu-login/editarinfo']);
+
+      const response:any = await this.apiService.register(this.form.value);
+      const response2:any = await this.apiService.login(response);
+      localStorage.setItem('token', response2.token);
+      localStorage.setItem('email', response2.email);
+      this.router.navigate(['/editarinfo']);
+      
     }catch(error){
       if (error instanceof HttpErrorResponse && error.error && error.error.errors) {
         const emailErrors = error.error.errors.email;
@@ -94,7 +95,11 @@ export class RegisterPage implements OnInit {
       } else if (error instanceof HttpErrorResponse && error.status === 500) {
         const errorResponse = "Error al crear usuario";
         this.addErrorMessages([errorResponse]);
-      } else{
+      }else if (error instanceof HttpErrorResponse && error.status === 400) {
+        const errorResponse = error.error.message;
+        this.addErrorMessages([errorResponse]);
+      }
+       else{
         const errorResponse = "Error al crear usuario";
         this.addErrorMessages([errorResponse]);
       }

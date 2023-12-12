@@ -32,7 +32,7 @@ export class MenuLoginPage implements OnInit {
     this.indiceSeleccionado = i;
   }
 
-  async salir() {
+  async logout() {
     const alert = await this.alertController.create({
       header: 'Cerrar Sesión',
       message: '¿Está seguro que desea salir?',
@@ -56,5 +56,7 @@ export class MenuLoginPage implements OnInit {
 
     await alert.present();
   }
+
+  
 
 }

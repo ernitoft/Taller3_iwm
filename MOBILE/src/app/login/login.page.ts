@@ -55,7 +55,7 @@ export class LoginPage implements OnInit {
       if (!response.error) {
         localStorage.setItem('token', response.token);
         localStorage.setItem('email', response.email);
-        this.router.navigate(['/menu-login/visualizar']);
+        this.router.navigate(['/visualizar']);
       } else {
         this.addErrorMessages([response.message]);
       }

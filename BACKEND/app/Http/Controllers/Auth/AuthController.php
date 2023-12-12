@@ -54,6 +54,13 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse Retorna un JSON con el mensaje de éxito o error
      */
     public function register(Request $request){
+
+        if (!guionesPuntos($request->rut)){
+            return response()->json([
+                'message'=>'RUT inválido: Ingrese puntos y guión'
+            ],400);
+        }
+
         $helper = verificarRUT($request->rut);
         $messages = makeMessages();
         $this->validate($request,[
@@ -90,7 +97,9 @@ class AuthController extends Controller
                     'yearBirth'=>$request->yearBirth,
                 ]);
                 return response()->json([
-                    'message'=>'Usuario creado exitosamente'
+                    'email'=>$request->email,
+                    'password'=>$password,
+                    'message'=>'Usuario creado con éxito'
                 ],200);
             }
         } 

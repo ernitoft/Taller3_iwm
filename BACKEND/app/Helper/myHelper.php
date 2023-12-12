@@ -92,10 +92,10 @@ function calcularDigitoVerificador($rut) {
  * @param string $rut RUT a verificar
  * @return bool Retorna true si el RUT es válido, false en caso contrario
  */
-    function verificarRUT($rut) {
-    $digitoVerificadorOriginal = substr($rut, -1);
-    $digitoVerificadorCalculado = calcularDigitoVerificador($rut);
-    return $digitoVerificadorOriginal == $digitoVerificadorCalculado;
+function verificarRUT($rut) {
+$digitoVerificadorOriginal = substr($rut, -1);
+$digitoVerificadorCalculado = calcularDigitoVerificador($rut);
+return $digitoVerificadorOriginal == $digitoVerificadorCalculado;
 }
 
 /**
@@ -107,4 +107,22 @@ function limpiarRUT($rut) {
     $rut = str_replace('.', '', $rut);
     $rut = str_replace('-', '', $rut);
     return $rut;
+}
+
+/**
+ * Función que cuenta los puntos y guiones de un RUT para validarlo
+ */
+function guionesPuntos($rut) {
+    $puntos = substr_count($rut, '.');
+    $guiones = substr_count($rut, '-');
+
+    if ($puntos == 0 || $guiones == 0){
+        return false;
+    }
+    else if ($puntos == 2 && $guiones == 1){
+        return true;
+    }
+    else{
+        return false;
+    }
 }

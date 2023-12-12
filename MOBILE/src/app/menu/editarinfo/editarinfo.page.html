@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="primary">
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
@@ -55,5 +55,7 @@
       </ion-card>
     </ion-item>
   </ion-list>
+  <ion-button expand="block" id="open-action-sheet">Editar</ion-button>
+<ion-action-sheet trigger="open-action-sheet" header="¿Qué deseas hacer?" [buttons]="actionSheetButtons"></ion-action-sheet>
 </ion-content>
 

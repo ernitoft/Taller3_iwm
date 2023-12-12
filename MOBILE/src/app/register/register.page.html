@@ -1,38 +1,42 @@
-<ion-header [translucent]="true">
+<ion-header color="primary">
   <ion-toolbar>
-    <ion-title>register</ion-title>
+    <ion-title>Registrarse</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" >
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">register</ion-title>
     </ion-toolbar>
   </ion-header>
   <form [formGroup]="form">
+
     <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
-      <ion-input type="text" name="name" formControlName="name"></ion-input>
+      <ion-input label="Nombre" name="name" formControlName="name" labelPlacement="floating" [counter]="true" minlength="10" maxlength="150"></ion-input>
     </ion-item>
+
     <ion-item>
       <ion-label position="floating">Correo</ion-label>
-      <ion-input type="email" name="email" formControlName="email"></ion-input>
+      <ion-input type="email" name="email" formControlName="email" placeholder="@ucn.cl, @alumnos.ucn.cl, @disc.ucn.cl, @ce.ucn.cl"></ion-input>
     </ion-item>
+
     <ion-item>
       <ion-label position="floating">Año de nacimiento</ion-label>
       <ion-input type="text" name="yearBirth" formControlName="yearBirth"></ion-input>
     </ion-item>
+
     <ion-item>
       <ion-label position="floating">RUT</ion-label>
-      <ion-input type="text" name="rut" formControlName="rut"></ion-input>
+      <ion-input type="text" name="rut" formControlName="rut" placeholder="Ingrese RUT con puntos y guión"></ion-input>
     </ion-item>
+
     <ion-button expand="block" color="primary" (click)="onSubmit()">Registrarse</ion-button>
   </form>
 
-  <ion-card color="primary" *ngIf="errorMessages.length > 0">
+  <ion-card color="danger" *ngIf="errorMessages.length > 0">
     <ion-card-header>
-      <ion-card-title>Errores</ion-card-title>
+      <ion-card-title color="white">Errores</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-list>
@@ -45,10 +49,10 @@
 
   <ion-card>
     <ion-card-header>
-      <ion-card-title>¿Tienes cuenta?</ion-card-title>
+      <ion-card-title color="white">¿Tienes cuenta?</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-button color="secundary" [routerLink]="['/login']" routerLinkActive="router-link-active">Iniciar sesión</ion-button>
+      <ion-button fill="clear" [routerLink]="['/login']" routerLinkActive="router-link-active">Iniciar sesión</ion-button>
     </ion-card-content>
   </ion-card>
 </ion-content>

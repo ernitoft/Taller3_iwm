@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Route, Router } from '@angular/router';
 import { ApiServiceService } from 'src/app/service/api-service.service';
 
 @Component({
@@ -19,15 +19,42 @@ export class EditarinfoPage implements OnInit {
   user: any;
 
   /**
-   * Variable que contiene la ruta de la pagina.
-   */
-  route = inject(Router);
-
-  /**
    * Constructor de la pagina de informacion.
    * @param userService API de usuarios.
    */
-  constructor(private userService: ApiServiceService) { }
+  constructor(private userService: ApiServiceService, private router: Router) { }
+
+  public actionSheetButtons = [
+    {
+      text: 'Actualizar perfil',
+      handler: () => this.navigateToPerfil(),
+    },
+    {
+      text: 'Cambiar contraseña',
+      handler: () => this.navigateToContrasena(),
+    },
+    {
+      text: 'Cancelar',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+      },
+    }
+  ];
+  
+  /**
+   * Metodo que va al actualizar perfil.
+   */
+  private navigateToPerfil() {
+    this.router.navigate(['/perfil']);
+  }
+  
+  /**
+   * Metodo que va a cambiar contraseña.
+   */
+  private navigateToContrasena() {
+    this.router.navigate(['/contrasena']);
+  }
 
   /**
    * Funcion que se ejecuta al iniciar la pagina.

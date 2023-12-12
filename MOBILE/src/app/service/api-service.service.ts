@@ -8,7 +8,15 @@ import { firstValueFrom } from 'rxjs';
 })
 export class ApiServiceService {
 
+  /**
+   * Endpoiint de la API Laravel.
+   */
   private endpoint = 'http://127.0.0.1:8000/api/';
+
+  /**
+   * Constructor de la clase.
+   * @param http variable para hacer peticiones http.
+   */
   constructor(private http: HttpClient) { }
 
   /**
@@ -43,7 +51,7 @@ export class ApiServiceService {
    * @returns respuesta de la API.
    */
   updateInfo (form: any) {
-    return firstValueFrom(this.http.post(this.endpoint + 'updateInfo/'+form.id, form, this.crearHeader()));
+    return firstValueFrom(this.http.patch(this.endpoint + 'updateInfo/'+form.id, form, this.crearHeader()));
   }
 
   /**
@@ -52,7 +60,7 @@ export class ApiServiceService {
    * @returns respuesta de la API.
    */
   updatePassword (form: any) {
-    return firstValueFrom(this.http.post(this.endpoint + 'updatePassword/'+form.id, form, this.crearHeader()));
+    return firstValueFrom(this.http.patch(this.endpoint + 'updatePassword/'+form.id, form, this.crearHeader()));
   }
 
   /**
