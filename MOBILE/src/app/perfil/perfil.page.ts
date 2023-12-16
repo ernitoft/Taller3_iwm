@@ -1,16 +1,16 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Form, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
 import { ApiServiceService } from 'src/app/service/api-service.service';
 
 @Component({
-  selector: 'app-contrasena',
-  templateUrl: './contrasena.page.html',
-  styleUrls: ['./contrasena.page.scss'],
+  selector: 'app-perfil',
+  templateUrl: './perfil.page.html',
+  styleUrls: ['./perfil.page.scss'],
 })
-export class ContrasenaPage implements OnInit {
+export class PerfilPage implements OnInit {
 
   /**
    * Variable que contiene los datos del usuario.
@@ -18,47 +18,53 @@ export class ContrasenaPage implements OnInit {
   logUser: any = [];
 
   /**
+   * Variable que contiene el formulario de perfil actualizar.
+   */
+  form: FormGroup;
+  /**
    * Variable que contiene los mensajes de error.
    */
   errorMessages: string[] = [];
-
+  
   /**
-   * Variable que contiene el formulario de contraseñas.
+   * Constructor de la clase.
+   * @param userService Servicio para obtener los datos del usuario logueado.
+   * @param formBuilder Form builder para el formulario.
+   * @param navController Nav controller para navegar entre paginas.
+   * @param alertController Alert controller para mostrar alertas.
+   * @param router Router para navegar entre paginas.
    */
-  form: FormGroup;
-
-  /**
-   * Constructor de la pagina de contraseñas.
-   * @param fb Form builder del registro
-   * @param alertController Alert controller
-   * @param navController Nav controller
-   */
-  constructor(private fb: FormBuilder,
+  constructor(private userService: ApiServiceService, private formBuilder: FormBuilder, 
+    private navController: NavController, 
     private alertController: AlertController,
-    private navController: NavController,
-    private router: Router,
-    private apiService: ApiServiceService) {
+    private router: Router) {
 
-    this.form = this.fb.group({
+    this.form = this.formBuilder.group({
       id: new FormControl(''),
-      newPassword: new FormControl('', Validators.required),
-      confirmPassword: new FormControl('', Validators.required),
+      name :  new FormControl('', Validators.required),
+      email : new FormControl('', Validators.required),
+      yearBirth : new FormControl('', Validators.required),
     });
-
   }
 
   /**
-   * Metodo que se ejecuta al iniciar la pagina.
+   * Funcion que se ejecuta al iniciar la pagina.
    */
   ngOnInit() {
-    this.apiService.getInfo(localStorage.getItem('email')).subscribe((data:any) => {
+    this.obtenerDatos();    
+  }
+
+  /**
+   * Funcion para obtener los datos del usuario logueado.
+   */
+  obtenerDatos() {
+    this.userService.getInfo(localStorage.getItem('email')).subscribe((data:any) => {
       this.logUser = data;
     });
   }
 
-
   /**
-   * Metodo que se ejecuta al enviar el formulario de contraseñas.
+   * Funcion para actualizar los datos del usuario una vez se confirme la actualizacion.
    */
   async onSubmit() {
     try{
@@ -71,10 +77,8 @@ export class ContrasenaPage implements OnInit {
         await alert.present();
         return;
       }
-    
-      this.form.controls['id'].setValue(this.logUser.usuario[0].id);
-
-      const response:any = await this.apiService.updatePassword(this.form.value);
+      this.form.controls['id'].setValue(this.logUser.id);
+      const response:any = await this.userService.updateInfo(this.form.value);
       if (!response.error) {
         const alert = await this.alertController.create({
           header: 'Contraseña actualizada',
@@ -82,17 +86,13 @@ export class ContrasenaPage implements OnInit {
           buttons: ['Aceptar'],
         });
         await alert.present();
-        this.navController.navigateRoot('/editarinfo');
+        this.router.navigate(['/editarinfo'],{ replaceUrl: true });
       }
     }catch(error:any){
       if (error instanceof HttpErrorResponse && error.error && error.error.errors) {
         const emailErrors = error.error.errors.email;
-        const rutErrors = error.error.errors.rut;
         const nameErrors = error.error.errors.name;
         const yearBirthErrors = error.error.errors.yearBirth;
-        if (rutErrors && rutErrors.length > 0) {
-          this.addErrorMessages(rutErrors);
-        }
         if (nameErrors && nameErrors.length > 0) {
           this.addErrorMessages(nameErrors);
         }
@@ -103,17 +103,18 @@ export class ContrasenaPage implements OnInit {
           this.addErrorMessages(emailErrors);
         }
       } else if (error instanceof HttpErrorResponse && error.status === 500) {
-        const errorResponse = "Error al cambiar contraseña";
+        const errorResponse = "Error al cambiar perfil";
         this.addErrorMessages([errorResponse]);
       } else if (error instanceof HttpErrorResponse && error.status === 400) {
         const errorResponse = error.error.message;
         this.addErrorMessages([errorResponse]);
       } else{
-        const errorResponse = "Error al cambiar contraseña";
+        const errorResponse = "Error al cambiar perfil";
         this.addErrorMessages([errorResponse]);
       }
-    }
+   }
   }
+
    /**
    * Añaade mensajes de error al arreglo de mensajes de error.
    * @param messages mensajes de error
@@ -136,7 +137,7 @@ export class ContrasenaPage implements OnInit {
           text: 'Cancelar operación',
           role: 'cancel',
           handler: () => {
-            this.navController.navigateRoot('/editarinfo');
+            this.router.navigate(['/editarinfo'],{ replaceUrl: true });
           }
         }, {
           text: 'Continuar operación',

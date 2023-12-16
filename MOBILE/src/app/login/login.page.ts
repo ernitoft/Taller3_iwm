@@ -55,7 +55,7 @@ export class LoginPage implements OnInit {
       if (!response.error) {
         localStorage.setItem('token', response.token);
         localStorage.setItem('email', response.email);
-        this.navController.navigateRoot(['/editarinfo']);
+        this.router.navigate(['/editarinfo']);
       } else {
         this.addErrorMessages([response.message]);
       }

@@ -72,7 +72,7 @@ export class RegisterPage implements OnInit {
       const response2:any = await this.apiService.login(response);
       localStorage.setItem('token', response2.token);
       localStorage.setItem('email', response2.email);
-      this.router.navigate(['/editarinfo']);
+      this.router.navigate(['/editarinfo'],{ replaceUrl: true });
       
     }catch(error){
       if (error instanceof HttpErrorResponse && error.error && error.error.errors) {

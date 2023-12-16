@@ -28,8 +28,8 @@
 
     <ion-card>
       <ion-card-content>
-        <ion-button color="primary" [routerLink]="['/login']" routerLinkActive="router-link-active">Inicio de sesión</ion-button>
-        <ion-button fill="clear" [routerLink]="['/register']" routerLinkActive="router-link-active">Registrate</ion-button>
+        <ion-button color="primary" (click)="login()" routerLinkActive="router-link-active">Inicio de sesión</ion-button>
+        <ion-button fill="clear" (click)="register()" routerLinkActive="router-link-active">Registrate</ion-button>
       </ion-card-content>
     </ion-card>
   </ion-card>

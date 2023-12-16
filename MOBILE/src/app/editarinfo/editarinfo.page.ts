@@ -46,14 +46,14 @@ export class EditarinfoPage implements OnInit {
    * Metodo que va al actualizar perfil.
    */
   private navigateToPerfil() {
-    this.router.navigate(['/perfil']);
+    this.router.navigate(['editarinfo/perfil']);
   }
   
   /**
    * Metodo que va a cambiar contraseña.
    */
   private navigateToContrasena() {
-    this.router.navigate(['/contrasena']);
+    this.router.navigate(['editarinfo/contrasena']);
   }
 
   /**

@@ -21,28 +21,22 @@ const routes: Routes = [
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
   {
-    path: 'menu-login',
-    canActivate: [loginGuard],
-    loadChildren: () => import('./menu/menu-login/menu-login.module').then( m => m.MenuLoginPageModule)
-  },
-  {
     path: 'visualizar',
-    canActivate: [loginGuard],
-    loadChildren: () => import('./menu/visualizar/visualizar.module').then( m => m.VisualizarPageModule)
+    loadChildren: () => import('./visualizar/visualizar.module').then( m => m.VisualizarPageModule)
   },
   {
     path: 'editarinfo',
-    canActivate: [loginGuard],
-    loadChildren: () => import('./menu/editarinfo/editarinfo.module').then( m => m.EditarinfoPageModule)
+    loadChildren: () => import('./editarinfo/editarinfo.module').then( m => m.EditarinfoPageModule)
   },
   {
-    path: 'perfil',
-    loadChildren: () => import('./menu/actualizar/perfil/perfil.module').then( m => m.PerfilPageModule)
+    path: 'editarinfo/perfil',
+    loadChildren: () => import('./perfil/perfil.module').then( m => m.PerfilPageModule)
   },
   {
-    path: 'contrasena',
-    loadChildren: () => import('./menu/actualizar/contrasena/contrasena.module').then( m => m.ContrasenaPageModule)
+    path: 'editarinfo/contrasena',    
+    loadChildren: () => import('./contrasena/contrasena.module').then( m => m.ContrasenaPageModule)
   },
+
   
 ];
 

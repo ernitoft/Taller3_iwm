@@ -8,9 +8,30 @@ import { Router } from '@angular/router';
 })
 export class HomePage implements OnInit {
 
+  /**
+   * Constructor de la pagina de inicio.
+   * @param router Router de la pagina.
+   */
   constructor(public router:Router) { }
 
+  /**
+   * Metodo que se ejecuta al iniciar la pagina.
+   */
   ngOnInit() {
+  }
+
+  /**
+   * Metodo que va a la pagina de login.
+   */
+  login(){
+    this.router.navigate(['/login'],{ replaceUrl: true });
+  }
+
+  /**
+   * Metodo que va a la pagina de registro.
+   */
+  register(){
+    this.router.navigate(['/register'],{ replaceUrl: true });
   }
 
 }

@@ -1,9 +1,9 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-        <ion-menu-button menu="main-menu"></ion-menu-button>
-    </ion-buttons> 
     <ion-title>Repositorios de Dizkm8</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main-menu"></ion-menu-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -15,7 +15,7 @@
     <ion-card-subtitle>Información personal</ion-card-subtitle>
   </ion-card-header>
 
-  <ion-list label = "Repositorios">
+  <ion-list label="Repositorios">
     <ion-item *ngFor="let repositorio of repositorios; let i =  index; ">
       <ion-card>
         <ion-card-header>
@@ -31,17 +31,18 @@
             <ion-label>Commits totales</ion-label>
             <ion-note slot="end">{{repositorio.commitsTotales}}</ion-note>
           </ion-item>
-          <ion-button (click)="toggleVisibility(i,repositorio.name)" id="present-alert"color="primary">Ver commits</ion-button>
+          <ion-button (click)="toggleVisibility(i,repositorio.name)" id="present-alert" color="primary">Ver
+            commits</ion-button>
           <ion-card *ngIf="cardVisible && commitIndex == i">
             <ion-card-content>
               <ion-item *ngFor="let commit of commits">
-                  <ion-card expand="block">
-                    <ion-card-content>
-                      <ion-item>
-                        <ion-label>Mensaje</ion-label>
-                        <ion-note slot="end">{{commit.commit.message}}</ion-note>
-                      </ion-item>
-                    </ion-card-content>
+                <ion-card expand="block">
+                  <ion-card-content>
+                    <ion-item>
+                      <ion-label>Mensaje</ion-label>
+                      <ion-note slot="end">{{commit.commit.message}}</ion-note>
+                    </ion-item>
+                  </ion-card-content>
                 </ion-card>
               </ion-item>
             </ion-card-content>
