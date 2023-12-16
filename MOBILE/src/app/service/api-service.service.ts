@@ -51,7 +51,7 @@ export class ApiServiceService {
    * @returns respuesta de la API.
    */
   updateInfo (form: any) {
-    return firstValueFrom(this.http.patch(this.endpoint + 'updateInfo/'+form.id, form, this.crearHeader()));
+    return firstValueFrom(this.http.patch(this.endpoint + 'update/'+form.id, form, this.crearHeader()));
   }
 
   /**

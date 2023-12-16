@@ -17,6 +17,7 @@ export class PerfilPage implements OnInit {
    */
   logUser: any = [];
 
+
   /**
    * Variable que contiene el formulario de perfil actualizar.
    */
@@ -35,15 +36,14 @@ export class PerfilPage implements OnInit {
    * @param router Router para navegar entre paginas.
    */
   constructor(private userService: ApiServiceService, private formBuilder: FormBuilder, 
-    private navController: NavController, 
     private alertController: AlertController,
     private router: Router) {
-
+    
     this.form = this.formBuilder.group({
       id: new FormControl(''),
-      name :  new FormControl('', Validators.required),
-      email : new FormControl('', Validators.required),
-      yearBirth : new FormControl('', Validators.required),
+      name :  new FormControl(null, Validators.required),
+      email : new FormControl(null, Validators.required),
+      yearBirth : new FormControl(null, Validators.required),
     });
   }
 
@@ -51,7 +51,11 @@ export class PerfilPage implements OnInit {
    * Funcion que se ejecuta al iniciar la pagina.
    */
   ngOnInit() {
+    this.router.navigate(['editarinfo/perfil']);
+    console.log("AAAAAAAAAAAAAAAAAAAAAAA")
     this.obtenerDatos();    
+
+
   }
 
   /**
@@ -61,6 +65,10 @@ export class PerfilPage implements OnInit {
     this.userService.getInfo(localStorage.getItem('email')).subscribe((data:any) => {
       this.logUser = data;
     });
+
+    this.form.controls['name'].setValue(this.logUser.usuario[0].name);
+    this.form.controls['email'].setValue(this.logUser.usuario[0].email);
+    this.form.controls['yearBirth'].setValue(this.logUser.usuario[0].yearBirth);
   }
 
   /**
@@ -77,18 +85,19 @@ export class PerfilPage implements OnInit {
         await alert.present();
         return;
       }
-      this.form.controls['id'].setValue(this.logUser.id);
+      this.form.controls['id'].setValue(this.logUser.usuario[0].id);
       const response:any = await this.userService.updateInfo(this.form.value);
       if (!response.error) {
         const alert = await this.alertController.create({
-          header: 'Contraseña actualizada',
-          message: 'Su contraseña ha sido actualizada correctamente',
+          header: 'Perfil actualizado',
+          message: 'Su perfil ha sido actualizado correctamente',
           buttons: ['Aceptar'],
         });
         await alert.present();
-        this.router.navigate(['/editarinfo'],{ replaceUrl: true });
+        this.router.navigate(['/editarinfo']);
       }
     }catch(error:any){
+      console.log(error); 
       if (error instanceof HttpErrorResponse && error.error && error.error.errors) {
         const emailErrors = error.error.errors.email;
         const nameErrors = error.error.errors.name;
@@ -137,7 +146,7 @@ export class PerfilPage implements OnInit {
           text: 'Cancelar operación',
           role: 'cancel',
           handler: () => {
-            this.router.navigate(['/editarinfo'],{ replaceUrl: true });
+            this.router.navigate(['/editarinfo']);
           }
         }, {
           text: 'Continuar operación',

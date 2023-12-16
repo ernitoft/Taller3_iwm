@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { loginGuard } from './guards/login.guards';
+import { LoginGuard } from './guards/login.guards';
 
 const routes: Routes = [
   {
@@ -14,7 +14,8 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule),
+
   },
   {
     path: 'register',
@@ -22,19 +23,23 @@ const routes: Routes = [
   },
   {
     path: 'visualizar',
-    loadChildren: () => import('./visualizar/visualizar.module').then( m => m.VisualizarPageModule)
+    loadChildren: () => import('./visualizar/visualizar.module').then( m => m.VisualizarPageModule),
+    canActivate: [LoginGuard],
   },
   {
     path: 'editarinfo',
-    loadChildren: () => import('./editarinfo/editarinfo.module').then( m => m.EditarinfoPageModule)
+    loadChildren: () => import('./editarinfo/editarinfo.module').then( m => m.EditarinfoPageModule),
+    canActivate:[LoginGuard]
   },
   {
     path: 'editarinfo/perfil',
-    loadChildren: () => import('./perfil/perfil.module').then( m => m.PerfilPageModule)
+    loadChildren: () => import('./perfil/perfil.module').then( m => m.PerfilPageModule),
+    canActivate:[LoginGuard]
   },
   {
     path: 'editarinfo/contrasena',    
-    loadChildren: () => import('./contrasena/contrasena.module').then( m => m.ContrasenaPageModule)
+    loadChildren: () => import('./contrasena/contrasena.module').then( m => m.ContrasenaPageModule),
+    canActivate:[LoginGuard]
   },
 
   

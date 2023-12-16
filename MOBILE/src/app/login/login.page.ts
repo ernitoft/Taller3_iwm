@@ -52,13 +52,11 @@ export class LoginPage implements OnInit {
         return;
       }
       const response:any = await this.usersService.login(this.formulario.value);
-      if (!response.error) {
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('email', response.email);
-        this.router.navigate(['/editarinfo']);
-      } else {
-        this.addErrorMessages([response.message]);
-      }
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('email', response.email);
+      console.log('Inicio de sesión exitoso');
+      await this.navigateToEditarInfo();
+      console.log('Fin de la navegación a /editarinfo');
     } catch (error:any) {
       if (error instanceof HttpErrorResponse && error.error && error.error.errors) {
         const emailErrors = error.error.errors.email;
@@ -103,6 +101,13 @@ export class LoginPage implements OnInit {
    */
   register() {
     this.router.navigate(['/register']);
+  }
+  
+  /**
+   * Metodo que redirige a la pagina de perfil
+   */
+  navigateToEditarInfo() {
+    this.router.navigate(['/editarinfo']);
   }
 
 }

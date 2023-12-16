@@ -6,12 +6,13 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoginGuard } from './guards/login.guards';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, ReactiveFormsModule,
     FormsModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy, },FormsModule,ReactiveFormsModule  ],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy, },FormsModule,ReactiveFormsModule, LoginGuard ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

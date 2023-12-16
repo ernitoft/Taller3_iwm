@@ -9,7 +9,6 @@
 
 <ion-content [fullscreen]="true">
   <ion-list>
-  
     <form [formGroup]="form">
 
       <ion-item>
@@ -21,9 +20,9 @@
       </ion-item>
 
       <ion-button expand="block" id="open-action-sheet" (click)="onSubmit()" >Cambiar</ion-button>
+      
     </form>
     <ion-button expand="block" fill="clear" (click)="volver()">Cancelar</ion-button>
-    
   </ion-list>
 
   <ion-card color="danger" *ngIf="errorMessages.length > 0">

@@ -44,18 +44,4 @@ export class AppComponent {
     await alert.present();
   }
 
-  /**
-   * Método que redirige a la página de perfil
-   */
-  editarInfo(){
-    this.router.navigate(['/editarinfo']);
-  }
-
-  /**
-   * Método que redirige a la página de visualizar
-   */
-  visualizar(){
-    this.router.navigate(['/visualizar']);
-  }
-
 }

@@ -1,15 +1,18 @@
-import { Router } from '@angular/router';
-import { inject } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
 
-export const loginGuard = () =>{
-/**
- * Funcion que verifica si el usuario está logueado.
- */
-    const router = inject(Router);
+@Injectable({
+  providedIn: 'root',
+})
+export class LoginGuard implements CanActivate {
+  constructor(private router: Router) {}
+
+  canActivate(): boolean {
     if (localStorage.getItem('token')) {
-        return true;
+      return true;
     } else {
-        router.navigate(['login']);   
-        return false;
+      this.router.navigate(['login']);
+      return false;
     }
-} 
+  }
+}

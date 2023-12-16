@@ -51,6 +51,7 @@ export class ContrasenaPage implements OnInit {
    * Metodo que se ejecuta al iniciar la pagina.
    */
   ngOnInit() {
+    this.router.navigate(['editarinfo/contrasena']);
     this.apiService.getInfo(localStorage.getItem('email')).subscribe((data:any) => {
       this.logUser = data;
     });
@@ -132,7 +133,7 @@ export class ContrasenaPage implements OnInit {
           text: 'Cancelar operación',
           role: 'cancel',
           handler: () => {
-            this.router.navigate(['/editarinfo'],{ replaceUrl: true });
+            this.router.navigate(['/editarinfo']);
           }
         }, {
           text: 'Continuar operación',

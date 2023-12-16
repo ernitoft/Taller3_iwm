@@ -24,14 +24,14 @@ export class HomePage implements OnInit {
    * Metodo que va a la pagina de login.
    */
   login(){
-    this.router.navigate(['/login'],{ replaceUrl: true });
+    this.router.navigate(['/login']);
   }
 
   /**
    * Metodo que va a la pagina de registro.
    */
   register(){
-    this.router.navigate(['/register'],{ replaceUrl: true });
+    this.router.navigate(['/register']);
   }
 
 }

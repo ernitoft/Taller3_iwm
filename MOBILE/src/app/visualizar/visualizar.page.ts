@@ -34,6 +34,7 @@ export class VisualizarPage implements OnInit {
    * Metodo que se ejecuta al iniciar la pagina.
    */
   ngOnInit() {
+    this.router.navigate(['visualizar']);
     this.obtenerRepositorios();
   }
 

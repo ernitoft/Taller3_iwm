@@ -1,7 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    
-    <ion-title>Actualizar perfil</ion-title>
+    <ion-title>Cambiar contraseña</ion-title>
     <ion-buttons slot="start">
       <ion-menu-button menu="main-menu"></ion-menu-button>
     </ion-buttons>
@@ -9,31 +8,29 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">aaaa</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <form [formGroup]="form">
-    <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
-      <ion-input formControlName="name" type="text" placeholder="Nombre actual: {{logUser.usuario[0].name}}"></ion-input>
-    </ion-item>
+  <ion-list>
+    <form [formGroup]="form">
 
-    <ion-item>
-      <ion-label position="floating">Correo</ion-label>
-      <ion-input formControlName="email" type="text" placeholder="Correo actual: {{logUser.usuario[0].email}}"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-input label="Nuevo nombre" labelPlacement="floating" formControlName="name" placeholder="{{logUser.usuario[0].name}}" [counter]="true" minlength="10" maxlength="150"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-input label="Nuevo correo" labelPlacement="floating" formControlName="email" placeholder="{{logUser.usuario[0].email}}"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">Año de nacimiento</ion-label>
-      <ion-input formControlName="yearBirth" type="text" placeholder="Año actual de nacimiento: {{logUser.usuario[0].yearBirth}}"></ion-input>
-    </ion-item>
-    <ion-button (click)="onSubmit()" expand="block">Actualizar</ion-button>
-  </form>
-  <ion-card color="primary" *ngIf="errorMessages.length > 0">
+      <ion-item>        
+        <ion-input label="Nuevo año de nacimiento" labelPlacement="floating" formControlName="yearBirth" placeholder="{{logUser.usuario[0].yearBirth}}"></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" (click)="onSubmit()" >Cambiar</ion-button>
+    </form>
+    <ion-button expand="block" fill="clear" (click)="onSubmit()">Cancelar</ion-button>
+  </ion-list>
+
+  <ion-card color="danger" *ngIf="errorMessages.length > 0">
     <ion-card-header>
-      <ion-card-title>Errores</ion-card-title>
+      <ion-card-title color="white">Errores</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <ion-list>
@@ -43,4 +40,5 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
+
 </ion-content>

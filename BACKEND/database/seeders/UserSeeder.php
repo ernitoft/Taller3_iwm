@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Ernes Fuenzalida Tello',
             'email' => 'ernes@alumnos.ucn.cl',
-            'password' => Hash::make('  '),
+            'password' => Hash::make('211765615'),
             'rut' => '21176561-5',
             'yearBirth' => 2002
         ]);
